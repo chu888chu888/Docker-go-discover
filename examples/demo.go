@@ -43,7 +43,10 @@ func main() {
 	}
 	log.Printf("Registered %s on port %s.\n", name, port)
 
-	set := client.Services(name)
+	set, err := client.Services(name)
+	if err != nil {
+		log.Fatal("Error getting services: ", err)
+	}
 	for {
 		log.Println(strings.Join(set.OnlineAddrs(), ", "))
 		time.Sleep(1 * time.Second)

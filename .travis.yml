@@ -1,0 +1,27 @@
+language: go
+go:
+  - 1.2
+  - tip
+
+before_install:
+  - wget https://github.com/coreos/etcd/releases/download/v0.2.0-rc1/etcd-v0.2.0-rc1-Linux-x86_64.tar.gz
+  - tar xvzf etcd-v0.2.0-rc1-Linux-x86_64.tar.gz
+  - mkdir etcd-data
+  - etcd-v0.2.0-rc1-Linux-x86_64/etcd -d etcd-data -n node0 &
+  - go install -race std
+  - go get code.google.com/p/go.tools/cmd/cover
+
+script:
+  - go test -race ./...
+  - go test -v -cover ./...
+
+notifications:
+  irc:
+    channels:
+      - "chat.freenode.net#flynn"
+    use_notice: true
+    skip_join: true
+    on_success: change
+    on_failure: always
+    template:
+      - "%{repository}/%{branch} - %{commit}: %{message} %{build_url}"

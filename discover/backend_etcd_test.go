@@ -59,7 +59,7 @@ func TestEtcdBackend_RegisterAndUnregister(t *testing.T) {
 	serviceName := "test_register"
 	serviceAddr := "127.0.0.1"
 
-	client.Delete(KeyPrefix + "/services/" + serviceName + "/" + serviceAddr)
+	client.Delete(KeyPrefix+"/services/"+serviceName+"/"+serviceAddr, true)
 	backend.Register(serviceName, serviceAddr, nil)
 
 	servicePath := KeyPrefix + "/services/" + serviceName + "/" + serviceAddr
@@ -93,7 +93,7 @@ func TestEtcdBackend_Attributes(t *testing.T) {
 		"baz": "qux",
 	}
 
-	client.Delete(KeyPrefix + "/services/" + serviceName + "/" + serviceAddr)
+	client.Delete(KeyPrefix+"/services/"+serviceName+"/"+serviceAddr, true)
 	backend.Register(serviceName, serviceAddr, serviceAttrs)
 	defer backend.Unregister(serviceName, serviceAddr)
 

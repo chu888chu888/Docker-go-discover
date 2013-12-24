@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/coreos/go-etcd/etcd"
+	"github.com/flynn/go-etcd/etcd"
 )
 
 func runEtcdServer() func() {
@@ -63,7 +63,7 @@ func TestEtcdBackend_RegisterAndUnregister(t *testing.T) {
 	backend.Register(serviceName, serviceAddr, nil)
 
 	servicePath := KeyPrefix + "/services/" + serviceName + "/" + serviceAddr
-	response, err := client.Get(servicePath, false)
+	response, err := client.Get(servicePath, false, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -74,7 +74,7 @@ func TestEtcdBackend_RegisterAndUnregister(t *testing.T) {
 	}
 
 	backend.Unregister(serviceName, serviceAddr)
-	_, err = client.Get(servicePath, false)
+	_, err = client.Get(servicePath, false, false)
 	if err == nil {
 		t.Fatal("Value not deleted after unregister")
 	}
